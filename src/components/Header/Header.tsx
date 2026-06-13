@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
+import { Logo } from '../Logo/Logo';
 import { Container } from '../../styles/shared';
 
 const navItems = [
@@ -30,34 +31,6 @@ const HeaderInner = styled(Container)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-
-const Logo = styled.a`
-  font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: 1.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: ${({ theme }) => theme.colors.text};
-  position: relative;
-
-  span {
-    color: ${({ theme }) => theme.colors.gold};
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: ${({ theme }) => theme.colors.gold};
-    transition: width ${({ theme }) => theme.transitions.medium};
-  }
-
-  &:hover::after {
-    width: 100%;
-  }
 `;
 
 const Nav = styled.nav`
@@ -217,9 +190,7 @@ export const Header = () => {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       >
         <HeaderInner>
-          <Logo href="#hero" onClick={closeMenu}>
-            Lumi<span>ère</span>
-          </Logo>
+          <Logo href="#hero" onClick={closeMenu} />
 
           <Nav>
             {navItems.map((item, i) => (

@@ -1,4 +1,10 @@
 import styled from 'styled-components';
+import {
+  InstagramIcon,
+  TelegramIcon,
+  WhatsAppIcon,
+} from '../Icons/SocialIcons';
+import { Logo } from '../Logo/Logo';
 import { Container } from '../../styles/shared';
 
 const FooterWrapper = styled.footer`
@@ -21,18 +27,6 @@ const FooterInner = styled(Container)`
   }
 `;
 
-const Logo = styled.span`
-  font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: ${({ theme }) => theme.colors.text};
-
-  span {
-    color: ${({ theme }) => theme.colors.gold};
-  }
-`;
-
 const Copyright = styled.p`
   font-size: 0.8rem;
   color: ${({ theme }) => theme.colors.textDim};
@@ -40,21 +34,33 @@ const Copyright = styled.p`
 
 const SocialLinks = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 12px;
 `;
 
 const SocialLink = styled.a`
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 50%;
   color: ${({ theme }) => theme.colors.textMuted};
-  transition: color ${({ theme }) => theme.transitions.fast};
+  transition: all ${({ theme }) => theme.transitions.fast};
 
   &:hover {
     color: ${({ theme }) => theme.colors.gold};
+    border-color: ${({ theme }) => theme.colors.gold};
+    box-shadow: ${({ theme }) => theme.shadows.glow};
+    transform: translateY(-2px);
   }
 `;
+
+const socialItems = [
+  { label: 'Instagram', href: 'https://instagram.com', Icon: InstagramIcon },
+  { label: 'Telegram', href: 'https://t.me', Icon: TelegramIcon },
+  { label: 'WhatsApp', href: 'https://wa.me', Icon: WhatsAppIcon },
+] as const;
 
 export const Footer = () => {
   const year = new Date().getFullYear();
@@ -62,22 +68,23 @@ export const Footer = () => {
   return (
     <FooterWrapper>
       <FooterInner>
-        <Logo>
-          Lumi<span>ère</span>
-        </Logo>
+        <Logo as="div" size="sm" animated={false} />
 
         <Copyright>© {year} Lumière. Все права защищены.</Copyright>
 
         <SocialLinks>
-          <SocialLink href="#" aria-label="Instagram">
-            Instagram
-          </SocialLink>
-          <SocialLink href="#" aria-label="Telegram">
-            Telegram
-          </SocialLink>
-          <SocialLink href="#" aria-label="WhatsApp">
-            WhatsApp
-          </SocialLink>
+          {socialItems.map(({ label, href, Icon }) => (
+            <SocialLink
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              title={label}
+            >
+              <Icon size={18} />
+            </SocialLink>
+          ))}
         </SocialLinks>
       </FooterInner>
     </FooterWrapper>

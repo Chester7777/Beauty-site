@@ -369,7 +369,7 @@ export const Hero = () => {
             transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
             <CoverImage
-              src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=800&q=80"
+              src={images.heroCard}
               alt="Мастер салона Lumière за работой"
             />
             <HeroImageOverlay />

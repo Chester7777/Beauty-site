@@ -19,6 +19,10 @@ npm run dev
 
 Сайт откроется на [http://localhost:5173](http://localhost:5173)
 
+## Демо
+
+Сайт опубликован на GitHub Pages: [https://chester7777.github.io/Beauty-site/](https://chester7777.github.io/Beauty-site/)
+
 ## Сборка
 
 ```bash

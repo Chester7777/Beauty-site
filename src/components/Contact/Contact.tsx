@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
+import { images } from '../../data/images';
 import {
   Container,
   GoldLine,
@@ -9,6 +10,7 @@ import {
   SectionSubtitle,
   SectionTitle,
 } from '../../styles/shared';
+import { CoverImage } from '../../styles/image';
 
 interface FormData {
   name: string;
@@ -23,6 +25,39 @@ const initialForm: FormData = {
   service: '',
   message: '',
 };
+
+const ContactSection = styled(Section)`
+  position: relative;
+  overflow: hidden;
+`;
+
+const ContactBackground = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  img {
+    filter: brightness(0.2) saturate(0.7);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      ${({ theme }) => theme.colors.bg} 0%,
+      rgba(8, 8, 8, 0.85) 30%,
+      rgba(8, 8, 8, 0.9) 70%,
+      ${({ theme }) => theme.colors.bg} 100%
+    );
+  }
+`;
+
+const ContactContent = styled(Container)`
+  position: relative;
+  z-index: 1;
+`;
 
 const ContactGrid = styled.div`
   display: grid;
@@ -327,8 +362,12 @@ export const Contact = () => {
   };
 
   return (
-    <Section id="contact">
-      <Container>
+    <ContactSection id="contact">
+      <ContactBackground>
+        <CoverImage src={images.contactBg} alt="" aria-hidden="true" />
+      </ContactBackground>
+
+      <ContactContent>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -513,7 +552,7 @@ export const Contact = () => {
             </AnimatePresence>
           </FormWrapper>
         </ContactGrid>
-      </Container>
-    </Section>
+      </ContactContent>
+    </ContactSection>
   );
 };

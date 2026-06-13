@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import styled from 'styled-components';
+import { images } from '../../data/images';
 import { Container } from '../../styles/shared';
+import { CoverImage, ImageOverlay } from '../../styles/image';
 
 const HeroSection = styled.section`
   position: relative;
@@ -8,6 +10,16 @@ const HeroSection = styled.section`
   display: flex;
   align-items: center;
   overflow: hidden;
+`;
+
+const HeroBackground = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  img {
+    filter: brightness(0.35) saturate(0.8);
+  }
 `;
 
 const BackgroundGlow = styled(motion.div)`
@@ -26,6 +38,7 @@ const BackgroundGlow = styled(motion.div)`
     transparent 70%
   );
   pointer-events: none;
+  z-index: 1;
 `;
 
 const BackgroundOrb = styled(motion.div)`
@@ -43,6 +56,7 @@ const BackgroundOrb = styled(motion.div)`
     transparent 70%
   );
   pointer-events: none;
+  z-index: 1;
 `;
 
 const GridOverlay = styled.div`
@@ -56,13 +70,59 @@ const GridOverlay = styled.div`
   background-size: 80px 80px;
   mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
   pointer-events: none;
+  z-index: 1;
 `;
 
-const HeroContent = styled(Container)`
+const HeroLayout = styled(Container)`
   position: relative;
   z-index: 2;
   padding-top: 120px;
   padding-bottom: 80px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 64px;
+  }
+`;
+
+const HeroText = styled.div``;
+
+const HeroImageCard = styled(motion.div)`
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  max-width: 480px;
+  margin: 0 auto;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    margin: 0;
+    margin-left: auto;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 2;
+  }
+`;
+
+const HeroImageOverlay = styled(ImageOverlay)`
+  background: linear-gradient(
+    160deg,
+    rgba(8, 8, 8, 0.1) 0%,
+    rgba(8, 8, 8, 0.45) 100%
+  );
 `;
 
 const Eyebrow = styled(motion.div)`
@@ -195,6 +255,7 @@ const ScrollIndicator = styled(motion.div)`
   font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+  z-index: 2;
 `;
 
 const ScrollLine = styled(motion.div)`
@@ -223,6 +284,11 @@ export const Hero = () => {
 
   return (
     <HeroSection id="hero">
+      <HeroBackground>
+        <CoverImage src={images.hero} alt="" aria-hidden="true" />
+        <ImageOverlay />
+      </HeroBackground>
+
       <BackgroundGlow
         animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
@@ -234,67 +300,81 @@ export const Hero = () => {
       <GridOverlay />
 
       <motion.div style={{ y, opacity, width: '100%' }}>
-        <HeroContent>
-          <Eyebrow
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={0}
-          >
-            Премиальный салон красоты
-          </Eyebrow>
-
-          <Title variants={fadeUp} initial="hidden" animate="visible" custom={1}>
-            Искусство <em>красоты</em> в каждой детали
-          </Title>
-
-          <Description
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            custom={2}
-          >
-            Создаём образы, которые отражают вашу индивидуальность.
-            Профессиональный уход, атмосфера роскоши и безупречный сервис.
-          </Description>
-
-          <Actions variants={fadeUp} initial="hidden" animate="visible" custom={3}>
-            <PrimaryButton
-              href="#contact"
-              whileHover={{ scale: 1.02, boxShadow: '0 0 40px rgba(201,169,110,0.2)' }}
-              whileTap={{ scale: 0.98 }}
+        <HeroLayout>
+          <HeroText>
+            <Eyebrow
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={0}
             >
-              Записаться
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path
-                  d="M3 8h10M9 4l4 4-4 4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </PrimaryButton>
-            <SecondaryButton href="#services" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              Наши услуги
-            </SecondaryButton>
-          </Actions>
+              Премиальный салон красоты
+            </Eyebrow>
 
-          <Stats variants={fadeUp} initial="hidden" animate="visible" custom={4}>
-            <StatItem>
-              <StatNumber>12+</StatNumber>
-              <StatLabel>лет опыта</StatLabel>
-            </StatItem>
-            <StatItem>
-              <StatNumber>8K+</StatNumber>
-              <StatLabel>довольных клиентов</StatLabel>
-            </StatItem>
-            <StatItem>
-              <StatNumber>15</StatNumber>
-              <StatLabel>мастеров</StatLabel>
-            </StatItem>
-          </Stats>
-        </HeroContent>
+            <Title variants={fadeUp} initial="hidden" animate="visible" custom={1}>
+              Искусство <em>красоты</em> в каждой детали
+            </Title>
+
+            <Description
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={2}
+            >
+              Создаём образы, которые отражают вашу индивидуальность.
+              Профессиональный уход, атмосфера роскоши и безупречный сервис.
+            </Description>
+
+            <Actions variants={fadeUp} initial="hidden" animate="visible" custom={3}>
+              <PrimaryButton
+                href="#contact"
+                whileHover={{ scale: 1.02, boxShadow: '0 0 40px rgba(201,169,110,0.2)' }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Записаться
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path
+                    d="M3 8h10M9 4l4 4-4 4"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </PrimaryButton>
+              <SecondaryButton href="#gallery" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                Галерея
+              </SecondaryButton>
+            </Actions>
+
+            <Stats variants={fadeUp} initial="hidden" animate="visible" custom={4}>
+              <StatItem>
+                <StatNumber>12+</StatNumber>
+                <StatLabel>лет опыта</StatLabel>
+              </StatItem>
+              <StatItem>
+                <StatNumber>8K+</StatNumber>
+                <StatLabel>довольных клиентов</StatLabel>
+              </StatItem>
+              <StatItem>
+                <StatNumber>15</StatNumber>
+                <StatLabel>мастеров</StatLabel>
+              </StatItem>
+            </Stats>
+          </HeroText>
+
+          <HeroImageCard
+            initial={{ opacity: 0, x: 60, rotateY: -15 }}
+            animate={{ opacity: 1, x: 0, rotateY: 0 }}
+            transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <CoverImage
+              src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=800&q=80"
+              alt="Мастер салона Lumière за работой"
+            />
+            <HeroImageOverlay />
+          </HeroImageCard>
+        </HeroLayout>
       </motion.div>
 
       <ScrollIndicator

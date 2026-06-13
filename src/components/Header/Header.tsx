@@ -6,6 +6,7 @@ import { Container } from '../../styles/shared';
 const navItems = [
   { label: 'Главная', href: '#hero' },
   { label: 'Услуги', href: '#services' },
+  { label: 'Галерея', href: '#gallery' },
   { label: 'О нас', href: '#about' },
   { label: 'Контакты', href: '#contact' },
 ];

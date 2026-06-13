@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { GallerySlider } from './components/Gallery/GallerySlider';
 import { Header } from './components/Header/Header';
 import { Hero } from './components/Hero/Hero';
 import { Services } from './components/Services/Services';
@@ -34,6 +35,7 @@ function App() {
       <main>
         <Hero />
         <Services />
+        <GallerySlider />
         <About />
         <Contact />
       </main>

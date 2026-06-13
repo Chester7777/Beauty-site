@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { serviceImages } from '../../data/images';
 import {
   Container,
   GoldLine,
@@ -8,6 +9,7 @@ import {
   SectionSubtitle,
   SectionTitle,
 } from '../../styles/shared';
+import { CoverImage } from '../../styles/image';
 
 const services = [
   {
@@ -71,7 +73,6 @@ const ServicesGrid = styled.div`
 
 const ServiceCard = styled(motion.article)`
   position: relative;
-  padding: 40px 32px;
   background: ${({ theme }) => theme.colors.bgCard};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 4px;
@@ -93,6 +94,7 @@ const ServiceCard = styled(motion.article)`
     );
     opacity: 0;
     transition: opacity ${({ theme }) => theme.transitions.medium};
+    z-index: 2;
   }
 
   &:hover {
@@ -104,10 +106,39 @@ const ServiceCard = styled(motion.article)`
   }
 `;
 
+const ServiceImageWrap = styled.div`
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 30%,
+      ${({ theme }) => theme.colors.bgCard} 100%
+    );
+  }
+
+  img {
+    transition: transform 0.5s ease;
+  }
+
+  ${ServiceCard}:hover & img {
+    transform: scale(1.08);
+  }
+`;
+
+const ServiceBody = styled.div`
+  padding: 28px 32px 40px;
+`;
+
 const ServiceIcon = styled.div`
   font-size: 1.5rem;
   color: ${({ theme }) => theme.colors.gold};
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 `;
 
 const ServiceTitle = styled.h3`
@@ -170,10 +201,19 @@ export const Services = () => {
               custom={i}
               whileHover={{ y: -6, transition: { duration: 0.3 } }}
             >
-              <ServiceIcon>{service.icon}</ServiceIcon>
-              <ServiceTitle>{service.title}</ServiceTitle>
-              <ServiceDescription>{service.description}</ServiceDescription>
-              <ServicePrice>{service.price}</ServicePrice>
+              <ServiceImageWrap>
+                <CoverImage
+                  src={serviceImages[i]}
+                  alt={service.title}
+                  loading="lazy"
+                />
+              </ServiceImageWrap>
+              <ServiceBody>
+                <ServiceIcon>{service.icon}</ServiceIcon>
+                <ServiceTitle>{service.title}</ServiceTitle>
+                <ServiceDescription>{service.description}</ServiceDescription>
+                <ServicePrice>{service.price}</ServicePrice>
+              </ServiceBody>
             </ServiceCard>
           ))}
         </ServicesGrid>

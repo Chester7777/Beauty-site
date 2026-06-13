@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { images } from '../../data/images';
 import {
   Container,
   GoldLine,
@@ -7,6 +8,7 @@ import {
   SectionLabel,
   SectionTitle,
 } from '../../styles/shared';
+import { CoverImage, ImageOverlay } from '../../styles/image';
 
 const AboutGrid = styled.div`
   display: grid;
@@ -51,25 +53,15 @@ const ImageWrapper = styled(motion.div)`
   }
 `;
 
-const ImagePlaceholder = styled.div`
+const SalonImage = styled(CoverImage)`
   position: relative;
   z-index: 1;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    160deg,
-    ${({ theme }) => theme.colors.surface} 0%,
-    ${({ theme }) => theme.colors.bgCard} 50%,
-    ${({ theme }) => theme.colors.bgElevated} 100%
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  filter: saturate(0.95) brightness(0.9);
+  transition: transform 0.6s ease, filter 0.6s ease;
 
-  svg {
-    width: 120px;
-    height: 120px;
-    opacity: 0.15;
+  ${ImageWrapper}:hover & {
+    transform: scale(1.04);
+    filter: saturate(1) brightness(1);
   }
 `;
 
@@ -201,15 +193,8 @@ export const About = () => {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <ImagePlaceholder>
-              <svg viewBox="0 0 120 120" fill="none">
-                <circle cx="60" cy="60" r="50" stroke="#c9a96e" strokeWidth="0.5" />
-                <path
-                  d="M60 20 L65 50 L95 55 L65 60 L60 90 L55 60 L25 55 L55 50 Z"
-                  fill="#c9a96e"
-                />
-              </svg>
-            </ImagePlaceholder>
+            <SalonImage src={images.about} alt="Интерьер салона Lumière" />
+            <ImageOverlay />
 
             <FloatingBadge
               initial={{ opacity: 0, y: 20 }}

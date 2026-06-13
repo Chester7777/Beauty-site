@@ -23,7 +23,16 @@ const AboutGrid = styled.div`
   }
 `;
 
-const ImageWrapper = styled(motion.div)`
+const ImageColumn = styled.div`
+  position: relative;
+  padding: 0 0 28px 32px;
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    padding: 0 0 36px 48px;
+  }
+`;
+
+const ImageFrame = styled(motion.div)`
   position: relative;
   aspect-ratio: 4 / 5;
   border-radius: 4px;
@@ -50,6 +59,7 @@ const ImageWrapper = styled(motion.div)`
     border-radius: 4px;
     z-index: 0;
     opacity: 0.4;
+    pointer-events: none;
   }
 `;
 
@@ -59,7 +69,7 @@ const SalonImage = styled(CoverImage)`
   filter: saturate(0.95) brightness(0.9);
   transition: transform 0.6s ease, filter 0.6s ease;
 
-  ${ImageWrapper}:hover & {
+  ${ImageFrame}:hover & {
     transform: scale(1.04);
     filter: saturate(1) brightness(1);
   }
@@ -67,32 +77,46 @@ const SalonImage = styled(CoverImage)`
 
 const FloatingBadge = styled(motion.div)`
   position: absolute;
-  bottom: 32px;
-  left: -20px;
-  z-index: 3;
-  padding: 20px 28px;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 18px 24px;
   background: ${({ theme }) => theme.colors.bgCard};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 4px;
   box-shadow: ${({ theme }) => theme.shadows.card};
+  white-space: nowrap;
 
-  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
-    left: -40px;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 24px;
+    right: 24px;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      ${({ theme }) => theme.colors.gold},
+      transparent
+    );
   }
 `;
 
 const BadgeNumber = styled.span`
-  display: block;
   font-family: ${({ theme }) => theme.fonts.heading};
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   color: ${({ theme }) => theme.colors.gold};
   line-height: 1;
 `;
 
 const BadgeText = styled.span`
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: ${({ theme }) => theme.colors.textMuted};
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 `;
 
 const AboutContent = styled(motion.div)``;
@@ -187,14 +211,16 @@ export const About = () => {
         </motion.div>
 
         <AboutGrid>
-          <ImageWrapper
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <SalonImage src={images.about} alt="Интерьер салона Lumière" />
-            <ImageOverlay />
+          <ImageColumn>
+            <ImageFrame
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <SalonImage src={images.about} alt="Интерьер салона Lumière" />
+              <ImageOverlay />
+            </ImageFrame>
 
             <FloatingBadge
               initial={{ opacity: 0, y: 20 }}
@@ -205,7 +231,7 @@ export const About = () => {
               <BadgeNumber>12</BadgeNumber>
               <BadgeText>лет совершенства</BadgeText>
             </FloatingBadge>
-          </ImageWrapper>
+          </ImageColumn>
 
           <AboutContent
             initial={{ opacity: 0, x: 40 }}
